@@ -2,4 +2,4 @@ apiai==1.2.3
 geojson==2.3.0
 numpy==1.15.0
 pyowm==2.9.0
-pyTelegramBotAPI==0.3.0
+pyTelegramBotAPI==3.6.5
