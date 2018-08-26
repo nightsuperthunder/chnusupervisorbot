@@ -84,7 +84,7 @@ def weth (message : Message):
                 break
             if int(temperature) == 1:
                 bot.send_message(message.chat.id, 'Зараз ' + str(int(temperature)) + ' градус')
-            elif int(temperature) == 2 || int(temperature) == 3 || int(temperature) == 4:
+            elif int(temperature) == 2 or int(temperature) == 3 or int(temperature) == 4:
                 bot.send_message(message.chat.id, 'Зараз ' + str(int(temperature)) + ' градуси')
             else:
                 bot.send_message(message.chat.id, 'Зараз ' + str(int(temperature)) + ' градусів')
@@ -102,7 +102,12 @@ def weth (message : Message):
         bot.send_message(message.chat.id,'Вологість ' + str(w.get_humidity()) + '%')
         bot.send_message(message.chat.id,'Тиск ' + str(int(press)) + ' мм. рт. ст.')
     else:
-        bot.send_message(message.chat.id,'Зараз ' + str(temperature) + ' градусів')
+        if int(temperature) == 1:
+                bot.send_message(message.chat.id, 'Зараз ' + str(int(temperature)) + ' градус')
+            elif int(temperature) == 2 or int(temperature) == 3 or int(temperature) == 4:
+                bot.send_message(message.chat.id, 'Зараз ' + str(int(temperature)) + ' градуси')
+            else:
+                bot.send_message(message.chat.id, 'Зараз ' + str(int(temperature)) + ' градусів')
         bot.send_message(message.chat.id,'Статус ' + w.get_detailed_status())
         bot.send_message(message.chat.id,'Небо грязне на ' + str(w.get_clouds()) + '%')
         if w.get_rain() == {}:
