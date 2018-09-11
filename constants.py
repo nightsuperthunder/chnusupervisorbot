@@ -6,16 +6,15 @@ startrepl = 'Hello'
 startreplo = 'Hello again'
 helprepl = '/weather - теперішня погода'
 bossid = '304206657'
+chatlogid = '-280745551'
 
 def log (message):
-    from datetime import datetime
-    file = open('log.txt', 'a')
-    file.write(str (datetime.now()) + '\n')
-    file.write('Повід від {0} {1}. (id = {2}) \n Текст - {3} \n'.format(message.from_user.first_name,
-                                                                     message.from_user.last_name,
-                                                                     str(message.from_user.id),
-                                                                     message.text))
-    file.close()
+    import telebot
+    bot = telebot.TeleBot(token)
+    bot.send_message(chatlogid, 'Повід від {0} {1}. (id = {2}) \n Текст - {3} \n'.format(message.from_user.first_name,
+                                                                                         message.from_user.last_name,
+                                                                                         str(message.from_user.id),
+                                                                                         message.text, ))
 
 
 users = set()
