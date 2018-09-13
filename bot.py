@@ -112,6 +112,49 @@ def weth (message : Message):
         bot.send_message(message.chat.id,'Тиск ' + str(int(press)) + ' мм. рт. ст.')
 
 
+
+@bot.message_handler(commands=['timetable'])
+def command_handler(message: Message):
+    if message.from_user.id in constants.st142a1:
+        bot.reply_to(message, 'розклад 142a1')
+    elif message.from_user.id in constants.st142a2:
+        bot.reply_to(message, 'розклад 142a2')
+    elif message.from_user.id in constants.st142b1:
+        bot.reply_to(message, 'розклад 142b1')
+    elif message.from_user.id in constants.st142b2:
+        bot.reply_to(message, 'розклад 142b2')
+    else:
+        bot.reply_to(message, 'Ви не зареєстровані, для реєстрації /regtogr')
+
+@bot.message_handler(commands=['regtogr'])
+def command_handler(message: Message):
+    if message.from_user.id in (constants.st142a1 or constants.st142a2 or constants.st142b1 or constants.st142b2) :
+        bot.reply_to(message, 'Ви вже зареєсторовані')
+    else:
+        user_markup = telebot.types.ReplyKeyboardMarkup(True, False)
+        user_markup.row('142A (1)', '142A (2)')
+        user_markup.row('142B (1)', '142B (2)')
+        group = bot.send_message(message.from_user.id, 'Виберіть свою групу', reply_markup=user_markup)
+        bot.register_next_step_handler(group, setgroup)
+
+def setgroup (message:Message):
+    group = message.text
+    hide_markup = telebot.types.ReplyKeyboardRemove()
+    bot.send_message(message.from_user.id, 'Вас прийнято в ' + group,  reply_markup=hide_markup)
+    if group == '142A (1)':
+        constants.st142a1.add(message.from_user.id)
+        pickle.dump(constants.users, open('save1.p', 'wb'))
+    elif group == '142A (2)':
+        constants.st142a2.add(message.from_user.id)
+        pickle.dump(constants.users, open('save1.p', 'wb'))
+    elif group == '142B (1)':
+        constants.st142a2.add(message.from_user.id)
+        pickle.dump(constants.users, open('save1.p', 'wb'))
+    elif group == '142B (2)':
+        constants.st142a2.add(message.from_user.id)
+        pickle.dump(constants.users, open('save1.p', 'wb'))
+
+
 @bot.message_handler(content_types=['text'])
 def text_handler(message):
     constants.log(message)
