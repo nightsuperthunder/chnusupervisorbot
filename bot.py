@@ -23,27 +23,24 @@ def command_handler(message: Message):
 def cllogch(message: Message):
     constants.log(message)
     if int(message.from_user.id) == int(constants.bossid):
-        ver = bot.reply_to(message, 'Логи (очистити , отримати , очистити користувачів) ?')
+        user_markup = telebot.types.ReplyKeyboardMarkup(True, False)
+        user_markup.row('очистити користувачів')
+        ver = bot.send_message(message.from_user.id, 'логи', reply_markup=user_markup)
         bot.register_next_step_handler(ver, cllog)
     else:
-        bot.reply_to(message, 'Відмовнено в доступі')
+        bot.reply_to(message, 'Відмовнено в доступі')                   #Запит на отримання логів
 
-def cllog (message: Message):
+def cllog (message: Message):                                           #Отримання логів
     ver = message.text
+    hide_markup = telebot.types.ReplyKeyboardRemove()
     constants.log(message)
-    if ver == 'очистити':
-        open('log.txt', 'w').close()
-        bot.send_message(message.chat.id, 'Логи очищено!')
-    elif ver == 'отримати':
-        file = open('log.txt', 'rb')
-        bot.send_document(message.from_user.id, file)
-    elif ver == 'очистити користувачів':
+    if ver == 'очистити користувачів':
         open('save.p', 'w').close()
         constants.users = set()
         pickle.dump(constants.users, open('save.p', 'wb'))
-        bot.send_message(message.chat.id, 'Користувачів очищено!')
+        bot.send_message(message.from_user.id, 'Користувачів очищено!', reply_markup=hide_markup)
     else:
-        bot.send_message(message.chat.id, 'Невдала спроба')
+        bot.send_message(message.from_user.id, 'Невдала спроба', reply_markup=hide_markup)
 
 @bot.message_handler(commands=['weather'])
 def command_handler(message: Message):
@@ -110,49 +107,6 @@ def weth (message : Message):
         bot.send_message(message.chat.id,'Вітер ' + str(wind) + 'м/с')
         bot.send_message(message.chat.id,'Вологість ' + str(w.get_humidity()) + '%')
         bot.send_message(message.chat.id,'Тиск ' + str(int(press)) + ' мм. рт. ст.')
-
-
-
-@bot.message_handler(commands=['timetable'])
-def command_handler(message: Message):
-    if message.from_user.id in constants.st142a1:
-        bot.reply_to(message, 'розклад 142a1')
-    elif message.from_user.id in constants.st142a2:
-        bot.reply_to(message, 'розклад 142a2')
-    elif message.from_user.id in constants.st142b1:
-        bot.reply_to(message, 'розклад 142b1')
-    elif message.from_user.id in constants.st142b2:
-        bot.reply_to(message, 'розклад 142b2')
-    else:
-        bot.reply_to(message, 'Ви не зареєстровані, для реєстрації /regtogr')
-
-@bot.message_handler(commands=['regtogr'])
-def command_handler(message: Message):
-    if message.from_user.id in (constants.st142a1 or constants.st142a2 or constants.st142b1 or constants.st142b2) :
-        bot.reply_to(message, 'Ви вже зареєсторовані')
-    else:
-        user_markup = telebot.types.ReplyKeyboardMarkup(True, False)
-        user_markup.row('142A (1)', '142A (2)')
-        user_markup.row('142B (1)', '142B (2)')
-        group = bot.send_message(message.from_user.id, 'Виберіть свою групу', reply_markup=user_markup)
-        bot.register_next_step_handler(group, setgroup)
-
-def setgroup (message:Message):
-    group = message.text
-    hide_markup = telebot.types.ReplyKeyboardRemove()
-    bot.send_message(message.from_user.id, 'Вас прийнято в ' + group,  reply_markup=hide_markup)
-    if group == '142A (1)':
-        constants.st142a1.add(message.from_user.id)
-        pickle.dump(constants.users, open('save1.p', 'wb'))
-    elif group == '142A (2)':
-        constants.st142a2.add(message.from_user.id)
-        pickle.dump(constants.users, open('save1.p', 'wb'))
-    elif group == '142B (1)':
-        constants.st142a2.add(message.from_user.id)
-        pickle.dump(constants.users, open('save1.p', 'wb'))
-    elif group == '142B (2)':
-        constants.st142a2.add(message.from_user.id)
-        pickle.dump(constants.users, open('save1.p', 'wb'))
 
 
 @bot.message_handler(content_types=['text'])
