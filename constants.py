@@ -4,20 +4,11 @@ dialogapi = '3d60f863d80240a6b9fd267573536717'
 owmapi = 'bc96319d28889b242c88cdb749655b9f'
 startrepl = 'Hello'
 startreplo = 'Hello again'
-helprepl = '/weather - теперішня погода \n/timetable - розклад \n/regtogr - реєстрація у групу'
+helprepl = '/weather - теперішня погода'
 bossid = '304206657'
 chatlogid = '-280745551'
-pari = {
-    1 : 'Інженерна графіка',
-    2 : 'Вища математика',
-    3 : 'Персональні комп\'ютери',
-    4 : 'Охорона праці',
-    5 : 'Іноземна мова',
-    6 : 'Іноземна мова (спецкурс)',
-    7 : 'Основи алгоритмізації та програмування',
-    8 : 'Фізика',
-    9 : 'Фізика (лаб)',
-}
+
+
 def log (message):
     import telebot
     bot = telebot.TeleBot(token)
@@ -28,7 +19,3 @@ def log (message):
 
 
 users = set()
-st142a1 = set()
-st142a2 = set()
-st142b1 = set()
-st142b2 = set()
